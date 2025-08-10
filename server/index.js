@@ -21,4 +21,6 @@ app.use('/api/translate', translateRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/detect', detectRoute); 
 
-app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
