@@ -10,32 +10,30 @@ const detectRoute = require('./routes/detect');
 
 const app = express();
 
+// Middleware
+app.use(express.json());
 
+// Allow all origins (for local + any device testing)
 app.use(cors({
-  origin: (origin, callback) => {
- 
-    callback(null, true);
-  },
+  origin: true,       // ✅ allows all origins
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization'],
   credentials: true
 }));
 
-app.use(express.json());
-
-
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('✅ MongoDB connected'))
-.catch(err => console.error('❌ MongoDB connection error:', err.message));
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch(err => console.error('❌ MongoDB connection error:', err.message));
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/translate', translateRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/detect', detectRoute);
+
+// Root test route
+app.get('/', (req, res) => res.send('🌍 Multilanguage Translator Backend Running!'));
 
 // Start server
 const PORT = process.env.PORT || 5000;
