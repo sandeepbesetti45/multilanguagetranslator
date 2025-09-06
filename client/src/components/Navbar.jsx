@@ -15,7 +15,7 @@ const Navbar = () => {
     <nav className="bg-gray-800 dark:bg-gray-900 text-white p-4 flex justify-between items-center shadow-lg">
       <h1 className="text-2xl font-bold text-blue-400">🌐 MultiLang Translator</h1>
       <div className="space-x-4 flex items-center">
-        {/* ✅ Theme Toggle */}
+       
         <button
           onClick={toggleTheme}
           className="bg-gray-700 px-2 py-1 rounded hover:bg-gray-600"

@@ -7,18 +7,24 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/register', {
-        username,
-        email,
-        password,
-      });
+      if (!API_URL) throw new Error('Missing REACT_APP_API_URL');
+
+      await axios.post(
+        `${API_URL}/api/auth/register`,
+        { username, email, password },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
       navigate('/login');
     } catch (err) {
-      alert('Registration failed');
+      const msg = err?.response?.data?.message || err.message || 'Registration failed';
+      alert(msg);
+      console.error('Register error:', err);
     }
   };
 
@@ -33,6 +39,7 @@ const Register = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
+          autoComplete="username"
         />
         <input
           type="email"
@@ -41,6 +48,7 @@ const Register = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          autoComplete="email"
         />
         <input
           type="password"
@@ -49,6 +57,7 @@ const Register = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          autoComplete="new-password"
         />
         <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 py-2 rounded">Register</button>
       </form>

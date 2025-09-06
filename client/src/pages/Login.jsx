@@ -6,18 +6,26 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
-        password,
-      });
+      if (!API_URL) throw new Error('Missing REACT_APP_API_URL');
+
+      const res = await axios.post(
+        `${API_URL}/api/auth/login`,
+        { email, password },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
       localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
       navigate('/');
     } catch (err) {
-      alert('Invalid email or password');
+      const msg = err?.response?.data?.message || err.message || 'Login failed';
+      alert(msg);
+      console.error('Login error:', err);
     }
   };
 
@@ -32,6 +40,7 @@ const Login = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          autoComplete="email"
         />
         <input
           type="password"
@@ -40,6 +49,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          autoComplete="current-password"
         />
         <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 py-2 rounded">Login</button>
       </form>

@@ -10,6 +10,7 @@ const Translate = () => {
   const [theme, setTheme] = useState('dark');
 
   const token = localStorage.getItem('token');
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const langOptions = {
     en: 'English',
@@ -72,7 +73,7 @@ const Translate = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/translate',
+        `${API_URL}/api/translate`,
         { text, targetLang },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -81,7 +82,7 @@ const Translate = () => {
         setTranslated(res.data.translatedText);
 
         await axios.post(
-          'http://localhost:5000/api/history/add',
+          `${API_URL}/api/history/add`,
           {
             originalText: text,
             translatedText: res.data.translatedText,
@@ -102,7 +103,7 @@ const Translate = () => {
     if (!text.trim()) return alert('Enter text to detect language');
 
     try {
-      const res = await axios.post('http://localhost:5000/api/detect', { text });
+      const res = await axios.post(`${API_URL}/api/detect`, { text });
       setDetectedLang(langOptions[res.data.language] || res.data.language);
     } catch (err) {
       console.error('Detection failed:', err.response?.data || err.message);
