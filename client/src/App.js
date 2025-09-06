@@ -7,21 +7,40 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const isLoggedIn = !!localStorage.getItem('token'); // check login state
+  const isLoggedIn = !!localStorage.getItem('token'); // check login status
 
   return (
     <div className="bg-white text-black dark:bg-gray-900 dark:text-white min-h-screen transition-colors duration-300">
       <Router>
         <Navbar />
         <Routes>
-          {/* Redirect / to login if not logged in, else Translate */}
-          <Route path="/" element={isLoggedIn ? <Translate /> : <Navigate to="/login" />} />
-          
-          <Route path="/login" element={!isLoggedIn ? <Login /> : <Navigate to="/" />} />
-          <Route path="/register" element={!isLoggedIn ? <Register /> : <Navigate to="/" />} />
-          
-          {/* ProtectedRoute ensures user must be logged in */}
-          <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+          {/* Public routes */}
+          <Route 
+            path="/login" 
+            element={!isLoggedIn ? <Login /> : <Navigate to="/" replace />} 
+          />
+          <Route 
+            path="/register" 
+            element={!isLoggedIn ? <Register /> : <Navigate to="/" replace />} 
+          />
+
+          {/* Protected routes */}
+          <Route 
+            path="/" 
+            element={
+              <ProtectedRoute>
+                <Translate />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/history" 
+            element={
+              <ProtectedRoute>
+                <History />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </Router>
     </div>
@@ -29,3 +48,4 @@ function App() {
 }
 
 export default App;
+
