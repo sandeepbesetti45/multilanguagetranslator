@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -30,7 +30,10 @@ const Register = () => {
 
   return (
     <div className="flex justify-center items-center h-[80vh]">
-      <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded shadow-lg w-full max-w-md space-y-4">
+      <form 
+        onSubmit={handleSubmit} 
+        className="bg-gray-800 p-6 rounded shadow-lg w-full max-w-md space-y-4"
+      >
         <h2 className="text-2xl font-bold text-center text-blue-400">Register</h2>
         <input
           type="text"
@@ -59,7 +62,20 @@ const Register = () => {
           required
           autoComplete="new-password"
         />
-        <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 py-2 rounded">Register</button>
+        <button 
+          type="submit" 
+          className="w-full bg-blue-500 hover:bg-blue-600 py-2 rounded"
+        >
+          Register
+        </button>
+
+        {/* Link to Login */}
+        <p className="text-center text-gray-300 text-sm">
+          Already have an account?{' '}
+          <Link to="/login" className="text-blue-400 hover:underline">
+            Login here
+          </Link>
+        </p>
       </form>
     </div>
   );

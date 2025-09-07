@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -21,7 +21,7 @@ const Login = () => {
 
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
-      navigate('/');
+      navigate('/translate');
     } catch (err) {
       const msg = err?.response?.data?.message || err.message || 'Login failed';
       alert(msg);
@@ -31,7 +31,10 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center h-[80vh]">
-      <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded shadow-lg w-full max-w-md space-y-4">
+      <form 
+        onSubmit={handleSubmit} 
+        className="bg-gray-800 p-6 rounded shadow-lg w-full max-w-md space-y-4"
+      >
         <h2 className="text-2xl font-bold text-center text-blue-400">Login</h2>
         <input
           type="email"
@@ -51,7 +54,20 @@ const Login = () => {
           required
           autoComplete="current-password"
         />
-        <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 py-2 rounded">Login</button>
+        <button 
+          type="submit" 
+          className="w-full bg-blue-500 hover:bg-blue-600 py-2 rounded"
+        >
+          Login
+        </button>
+
+        {/* Link to Register */}
+        <p className="text-center text-gray-300 text-sm">
+          Don’t have an account?{' '}
+          <Link to="/register" className="text-blue-400 hover:underline">
+            Register here
+          </Link>
+        </p>
       </form>
     </div>
   );
