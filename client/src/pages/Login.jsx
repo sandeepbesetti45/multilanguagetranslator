@@ -19,9 +19,12 @@ const Login = () => {
         { headers: { 'Content-Type': 'application/json' } }
       );
 
+      // Save token and user info
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
-      navigate('/translate');
+
+      // ✅ Navigate to Translate page (root route)
+      navigate('/');
     } catch (err) {
       const msg = err?.response?.data?.message || err.message || 'Login failed';
       alert(msg);
@@ -61,7 +64,6 @@ const Login = () => {
           Login
         </button>
 
-        {/* Link to Register */}
         <p className="text-center text-gray-300 text-sm">
           Don’t have an account?{' '}
           <Link to="/register" className="text-blue-400 hover:underline">
